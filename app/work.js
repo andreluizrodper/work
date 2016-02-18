@@ -1,0 +1,32 @@
+notifyStatus = false;
+Notification.requestPermission(function (permission) {
+    notifyStatus = permission;
+});
+
+angular
+.module("work", ["ngRoute"])
+.config(function($routeProvider, $locationProvider) {
+    $routeProvider
+        .when("/", {
+            templateUrl: "templates/dashboard.html",
+            controller: "dashboard"
+        });
+})
+.directive("watch", function(){
+	return {
+		templateUrl: "templates/watch.html",
+		controller: "watch"
+	}
+})
+.directive("lists", function(){
+	return {
+		templateUrl: "templates/lists.html",
+		controller: "lists"
+	}
+})
+.directive("memo", function(){
+	return {
+		templateUrl: "templates/memo.html",
+		controller: "memo"
+	}
+});

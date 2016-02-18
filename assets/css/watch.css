@@ -1,0 +1,16 @@
+#watch.stop { background:#ddd !important; }
+#watch.active { background:#fafafa; }
+#watch.active span:before { animation-name:watch; animation-duration:1s; animation-iteration-count:infinite; }
+#watch .display { text-align:center; margin:20px 0; display:block; font-size:16px; }
+#watch .display span { display:inline; }
+#watch .display span:before { content:":"; margin:0 10px; }
+#watch .display span:first-child:before { content:""; margin:0; }
+#watch button { width:100%; padding:0; outline:none; border:0; background:0; text-align:center; display:block; color:#333; }
+#watch button em,
+#watch.active button i { display:none; }
+#watch.active button em { display:block; }
+@keyframes watch {
+	0% { opacity:1; }
+	50% { opacity:0; }
+	100% { opacity:1; }
+}

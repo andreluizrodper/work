@@ -1,0 +1,32 @@
+<div id="lists" class="box">
+    <div class="header">
+        Lists
+    </div>
+    <div class="content">
+        <form class="new-list" ng-submit="newList()">
+            <div class="input">
+                <input type="text"/>
+                <label>New list</label>
+                <span></span>
+            </div>
+            <button>Create</button>
+        </form>
+        <div class="list" ng-repeat="item in lists track by item.id">
+            <strong>{{item.name}}</strong>
+            <ul>
+                <li ng-repeat="task in item.list track by task.id">
+                    <input ng-change="done()" type="checkbox" {{task.done}}/>
+                    <span>{{task.name}}</span>
+                </li>
+            </ul>
+            <form class="new-item" ng-submit="newItem()" data-id="{{item.id}}">
+                <div class="input">
+                    <input type="text"/>
+                    <label>New item</label>
+                    <span></span>
+                </div>
+                <button>Add</button>
+            </form>
+        </div>
+    </div>
+</div>
