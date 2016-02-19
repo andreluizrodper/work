@@ -9,24 +9,34 @@
                 <label>New list</label>
                 <span></span>
             </div>
-            <button>Create</button>
+            <button class="fa fa-plus"></button>
         </form>
-        <div class="list" ng-repeat="item in lists track by item.id">
-            <strong>{{item.name}}</strong>
-            <ul>
-                <li ng-repeat="task in item.list track by task.id">
-                    <input ng-change="done()" type="checkbox" {{task.done}}/>
-                    <span>{{task.name}}</span>
-                </li>
-            </ul>
-            <form class="new-item" ng-submit="newItem()" data-id="{{item.id}}">
-                <div class="input">
-                    <input type="text"/>
-                    <label>New item</label>
-                    <span></span>
+        <div class="row">
+            <div class="col-sm-6 col-md-4" ng-repeat="item in lists track by item.name">
+                <div class="list">
+                    <div class="header">
+                        {{item.name}}
+                        <button class="fa fa-trash" ng-click="listRemove(item.id)"></button>
+                    </div>
+                    <ul>
+                        <li ng-repeat="task in item.items track by task.name">
+                            <span class="{{task.done}} holder">
+                                <input ng-click="done(item.id, task.id)" type="checkbox"/>
+                                <span>{{task.name}}</span>
+                            </span>
+                            <button class="fa fa-trash" ng-click="itemRemove(item.id, task.id)"></button>
+                        </li>
+                    </ul>
+                    <form class="new-item" ng-submit="newItem(item.id)" name="{{item.id}}">
+                        <div class="input">
+                            <input type="text"/>
+                            <label>New item</label>
+                            <span></span>
+                        </div>
+                        <button class="fa fa-plus"></button>
+                    </form>
                 </div>
-                <button>Add</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>

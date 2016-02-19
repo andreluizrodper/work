@@ -1,3 +1,11 @@
+/*var needToConfirm = true;
+
+window.onbeforeunload = confirmExit;
+function confirmExit(){
+    if(needToConfirm)
+        return "Quer fechar essa janela?";
+}*/
+
 notifyStatus = false;
 Notification.requestPermission(function (permission) {
     notifyStatus = permission;
