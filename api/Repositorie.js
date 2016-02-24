@@ -26,6 +26,7 @@ function newList(router)
 }
 
 
+
 function listByUser(router)
 {
 
@@ -94,11 +95,190 @@ router.route("/task").get(function(req,res){
     });
 }
 
+function updateTask(router) {
+  router.route("/task").put(function(req,res){
+    var response = {};
+    mongoDB.task.findOneAndUpdate({_id : req.body.task_id}, {complete : true},{upsert:false}, function(err,data){
+      if (err)
+      {
+              response = {"erro" : true,"mensagem" : "Erro ao atualizar dados"};
+      }
+      else {
+          response = {"erro" : false,"message" : "dados atualizados com sucesso", };
+      }
+      res.json(response);
+
+    });
+  });
+}
+
+function deleteList(router)
+{
+    router.route("/list").delete(function(req,res){
+        var response = {};
+        var db = new mongoDB.list();
+        var _lista = null;
+
+        console.log(req.body.list_id);
+        //localiza a lista
+        mongoDB.list.findOne({_id : req.body.list_id},function(err, lista)
+        {
+          //verifica se encontrou a lista
+          if (lista == null)
+          {
+              response = {"erro" : true,"mensagem" : "Erro ao remover dados, id não encontrado"};
+              res.json(response);
+              return;
+          }
+          //remove a lista efetivamente
+          lista.remove(function(err){
+            if (err)
+            {
+              response = {"erro" : true,"mensagem" : "Erro ao remover dados, throw err"};
+            }
+            else {
+              response = {"erro" : false,"mensagem" : "Dados removidos"};
+            }
+            res.json(response);
+          });
+        });
+
+    });
+}
+
+function deleteTask(router)
+{
+    router.route("/task").delete(function(req,res){
+        var response = {};
+        var db = new mongoDB.task();
+
+
+
+        //localiza a task
+        mongoDB.task.findOne({_id : req.body.task_id},function(err, task)
+        {
+          //verifica se encontrou a lista
+          if (lista == null)
+          {
+              response = {"erro" : true,"mensagem" : "Erro ao remover dados, id não encontrado"};
+              res.json(response);
+              return;
+          }
+          //remove a task efetivamente
+          task.remove(function(err){
+            if (err)
+            {
+              response = {"erro" : true,"mensagem" : "Erro ao remover dados, throw err"};
+            }
+            else {
+              response = {"erro" : false,"mensagem" : "Dados removidos"};
+            }
+            res.json(response);
+          });
+        });
+
+    });
+}
+
+function getMemo(router)
+{
+  router.route("/memo").get(function(req,res){
+    var response = {};
+
+    mongoDB.memo.findOne({user_id : req.query.user_id},function(err,data){
+
+      if (err)
+      {
+        response = {"erro":true,"mensagem" : "Erro ao buscar dados"}
+      }
+      else {
+        response = {"erro":false,"mensagem" : "dados retornados", "data" : data}
+      }
+      res.json(response);
+    });
+  });
+}
+function updateMemo(router) {
+  router.route("/memo").put(function(req,res){
+    var response = {};
+
+    var obj = new mongoDB.memo();
+
+    obj.user_id = req.body.user_id;
+    obj.text = req.body.text;
+
+    mongoDB.memo.remove({user_id : req.body.user_id},function(err,data){});
+
+    obj.save(function(err,data){
+      if (err)
+      {
+              response = {"erro" : true,"mensagem" : "Erro ao atualizar dados"};
+      }
+      else {
+          response = {"erro" : false,"message" : "dados atualizados com sucesso", };
+      }
+      res.json(response);
+
+    });
+  });
+}
+
+function getPomodoro(router)
+{
+  router.route("/pomodoro").get(function(req,res){
+    var response = {};
+
+    mongoDB.pomodoro.findOne({user_id : req.query.user_id},function(err,data){
+
+      if (err)
+      {
+        response = {"erro":true,"mensagem" : "Erro ao buscar dados"}
+      }
+      else {
+        response = {"erro":false,"mensagem" : "dados retornados", "data" : data}
+      }
+      res.json(response);
+    });
+  });
+}
+
+function updatePomodoro(router) {
+  router.route("/pomodoro").put(function(req,res){
+    var response = {};
+
+    var obj = new mongoDB.pomodoro();
+
+    obj.user_id = req.body.user_id;
+    obj.work = req.body.work;
+    obj.relax = req.body.relax;
+
+    mongoDB.pomodoro.remove({user_id : req.body.user_id},function(err,data){});
+
+    obj.save(function(err,data){
+      if (err)
+      {
+        throw err;
+              response = {"erro" : true,"mensagem" : "Erro ao atualizar dados"};
+      }
+      else {
+          response = {"erro" : false,"message" : "dados atualizados com sucesso", };
+      }
+      res.json(response);
+
+    });
+  });
+}
 module.exports = {
     registerAll : function(router){
         newList(router);
         newTask(router);
         taskByList(router);
         listByUser(router);
+        deleteList(router);
+        updateTask(router);
+        updateMemo(router);
+        getMemo(router);
+        updatePomodoro(router);
+        getPomodoro(router);
     }
 }
