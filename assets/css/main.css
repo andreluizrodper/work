@@ -1,3 +1,4 @@
+@import "dashboard.css";
 @import "watch.css";
 @import "list.css";
 @import "memo.css";
@@ -21,5 +22,5 @@ input { outline:none !important; }
 
 .box { float:left; width:100%; box-shadow:0 1px 3px rgba(0,0,0,0.4); margin:10px 0; }
 .box .header { text-align:center; padding:10px 0; background:#eee; color:#333; }
-.box .content { padding:0 15px; } 
+.box .content { width:100%; float:left; background:#fff; padding:0 15px; } 
 .box .footer { background:#f1f1f1; padding:10px 0; } 

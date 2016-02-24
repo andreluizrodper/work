@@ -1,1 +1,1 @@
-#memo textarea { width:100%; outline:none; height:400px; resize:none; border:0; padding:10px; line-height:24px; }
+#memo textarea { width:100%; outline:none; height:400px; resize:none; border:0; padding:10px; line-height:24px; float:left; }

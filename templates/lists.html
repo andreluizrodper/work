@@ -5,8 +5,8 @@
     <div class="content">
         <form class="new-list" ng-submit="newList()">
             <div class="input">
-                <input type="text"/>
-                <label>New list</label>
+                <input id="list" type="text"/>
+                <label for="list">New list</label>
                 <span></span>
             </div>
             <button class="fa fa-plus"></button>
@@ -21,16 +21,16 @@
                     <ul>
                         <li ng-repeat="task in item.items track by task.name">
                             <span class="{{task.done}} holder">
-                                <input ng-click="done(item.id, task.id)" type="checkbox"/>
+                                <input ng-click="done(item.index, task.index)" type="checkbox"/>
                                 <span>{{task.name}}</span>
                             </span>
                             <button class="fa fa-trash" ng-click="itemRemove(item.id, task.id)"></button>
                         </li>
                     </ul>
-                    <form class="new-item" ng-submit="newItem(item.id)" name="{{item.id}}">
+                    <form class="new-item" ng-submit="newItem(item.id, item.index)" name="{{item.index}}">
                         <div class="input">
-                            <input type="text"/>
-                            <label>New item</label>
+                            <input id="task{{item.index}}" type="text"/>
+                            <label for="task{{item.index}}">New item</label>
                             <span></span>
                         </div>
                         <button class="fa fa-plus"></button>
