@@ -98,7 +98,7 @@ router.route("/task").get(function(req,res){
 function updateTask(router) {
   router.route("/task").put(function(req,res){
     var response = {};
-    mongoDB.task.findOneAndUpdate({_id : req.body.task_id}, {complete : true},{upsert:false}, function(err,data){
+    mongoDB.task.findOneAndUpdate({_id : req.body.task_id}, {complete : req.body.complete},{upsert:false}, function(err,data){
       if (err)
       {
               response = {"erro" : true,"mensagem" : "Erro ao atualizar dados"};
@@ -153,12 +153,12 @@ function deleteTask(router)
         var db = new mongoDB.task();
 
 
-
+        
         //localiza a task
         mongoDB.task.findOne({_id : req.body.task_id},function(err, task)
         {
           //verifica se encontrou a lista
-          if (lista == null)
+          if (task == null)
           {
               response = {"erro" : true,"mensagem" : "Erro ao remover dados, id não encontrado"};
               res.json(response);
@@ -275,6 +275,7 @@ module.exports = {
         taskByList(router);
         listByUser(router);
         deleteList(router);
+        deleteTask(router);
         updateTask(router);
         updateMemo(router);
         getMemo(router);
