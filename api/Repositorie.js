@@ -121,7 +121,7 @@ function deleteList(router)
 
         console.log(req.body.list_id);
         //localiza a lista
-        mongoDB.list.findOne({_id : req.body.list_id},function(err, lista)
+        mongoDB.list.findOne({_id : req.query.list_id},function(err, lista)
         {
           //verifica se encontrou a lista
           if (lista == null)
@@ -153,9 +153,9 @@ function deleteTask(router)
         var db = new mongoDB.task();
 
 
-        
+
         //localiza a task
-        mongoDB.task.findOne({_id : req.body.task_id},function(err, task)
+        mongoDB.task.findOne({_id : req.query.task_id},function(err, task)
         {
           //verifica se encontrou a lista
           if (task == null)
