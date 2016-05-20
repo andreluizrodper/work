@@ -1,0 +1,11 @@
+{
+  "name": "work",
+  "description": "",
+  "license": "",
+  "readme": "",
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "mongoose": "*"
+  }
+}
