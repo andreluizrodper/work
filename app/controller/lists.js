@@ -2,14 +2,14 @@ angular
 .module("work")
 .controller("lists", function($scope, $http){
     $scope.lists = [];
-    $http.get("http://198.175.125.21:8086/list?user_id=" + $.cookie("br.com.alrp.work")).then(function(response){
+    $http.get("http://192.168.1.101:8086/list?user_id=" + $.cookie("br.com.alrp.work")).then(function(response){
         $scope.lists = response.data.data;
         for(var a in response.data.data){
             $scope.lists[a].name = response.data.data[a].description;
             $scope.lists[a].index = a;
             $scope.lists[a].id = response.data.data[a]._id;
             $scope.lists[a].items = [];    
-            $http.get("http://198.175.125.21:8086/task?list_id=" + response.data.data[a].id).then(function(response){
+            $http.get("http://192.168.1.101:8086/task?list_id=" + response.data.data[a].id).then(function(response){
                 if(response.data.data[0] == undefined)
                     return;
                 for(var c in $scope.lists){
@@ -20,7 +20,9 @@ angular
                     $scope.lists[index].items[b] = [];
                     $scope.lists[index].items[b].id = response.data.data[b]._id;
                     $scope.lists[index].items[b].name = response.data.data[b].description;
-                    //$scope.lists[index].items[b].done = response.data.data[b].description;
+                    $scope.lists[index].items[b].done = response.data.data[b].complete ==  true ? "done" : "";
+                    $scope.lists[index].items[b].complete = response.data.data[b].complete;
+                    $scope.lists[index].items[b].index = b;
                 }
             });
         }
@@ -35,7 +37,7 @@ angular
         }
         if(repeat)
             return false;
-        $http.post("http://198.175.125.21:8086/list",{"user_id": $.cookie("br.com.alrp.work"), "description": $(".new-list input").val()})
+        $http.post("http://192.168.1.101:8086/list",{"user_id": $.cookie("br.com.alrp.work"), "description": $(".new-list input").val()})
             .then(function(response){
             id = $scope.lists.length;
             $scope.lists[id] = [];
@@ -57,7 +59,7 @@ angular
         }
         if(repeat)
             return false;
-        $http.post("http://198.175.125.21:8086/task", {"list_id": id, "description": $(".new-item[name='" + index + "'] input").val()})
+        $http.post("http://192.168.1.101:8086/task", {"list_id": id, "description": $(".new-item[name='" + index + "'] input").val()})
             .then(function(response){
             count = $scope.lists[index].items.length;
             $scope.lists[index].items[count] = [];
@@ -65,20 +67,43 @@ angular
             $scope.lists[index].items[count].id = response.data.data._id;
             $scope.lists[index].items[count].name = response.data.data.description;
             $scope.lists[index].items[count].done = "";
+            
+
             $(".new-item[name='" + index + "']")[0].reset();
             $(".new-item[name='" + index + "'] input").blur();
         });
     }
     $scope.done = function(id, item_id){
+        var _done = "";
+        var isDone = false;
         if($scope.lists[id].items[item_id].done == "")
+        {
             $scope.lists[id].items[item_id].done = "done";
+            isDone = true;
+        }
         else
+        {
             $scope.lists[id].items[item_id].done = "";
+            isDone = false;
+        }
+
+        $http.put("http://192.168.1.101:8086/task", {task_id : $scope.lists[id].items[item_id].id, complete: isDone });
+        
     }
     $scope.itemRemove = function(id, item_id){
-        $scope.lists[id].items.splice(item_id, 1);
+        
+        $http.delete("http://192.168.1.101:8086/task?task_id="+$scope.lists[id].items[item_id].id)
+        .then(function (response){
+            $scope.lists[id].items.splice(item_id, 1);
+        });
+        
     }
     $scope.listRemove = function(id){
-        $scope.lists.splice(id, 1);
+        console.log($scope.lists);
+        $http.delete("http://192.168.1.101:8086/list?list_id="+$scope.lists[id].id)
+        .then(function (response){
+            $scope.lists.splice(id, 1);
+        });
+        
     }
 });

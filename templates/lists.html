@@ -12,19 +12,19 @@
             <button class="fa fa-plus"></button>
         </form>
         <div class="row">
-            <div class="col-sm-6 col-md-4" ng-repeat="item in lists track by item.name">
+            <div class="col-sm-6 col-md-6" ng-repeat="item in lists">
                 <div class="list">
                     <div class="header">
                         {{item.name}}
-                        <button class="fa fa-trash" ng-click="listRemove(item.id)"></button>
+                        <button class="fa fa-trash" ng-click="listRemove(item.index)"></button>
                     </div>
                     <ul>
-                        <li ng-repeat="task in item.items track by task.name">
+                        <li ng-repeat="task in item.items">
                             <span class="{{task.done}} holder">
-                                <input ng-click="done(item.index, task.index)" type="checkbox"/>
+                                <input ng-click="done(item.index, task.index)" type="checkbox" ng-checked="task.complete"/>
                                 <span>{{task.name}}</span>
                             </span>
-                            <button class="fa fa-trash" ng-click="itemRemove(item.id, task.id)"></button>
+                            <button class="fa fa-trash" ng-click="itemRemove(item.index, task.index)"></button>
                         </li>
                     </ul>
                     <form class="new-item" ng-submit="newItem(item.id, item.index)" name="{{item.index}}">

@@ -28,7 +28,7 @@ angular
 })
 .directive("lists", function(){
 	return {
-		templateUrl: "templates/lists.html",
+		templateUrl: "templates/lists.html?v=1",
 		controller: "lists"
 	}
 })

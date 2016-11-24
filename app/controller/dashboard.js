@@ -9,6 +9,7 @@ angular
     $scope.updateUser = function(){
         $scope.user_unique = $("header input").val();
         $.cookie("br.com.alrp.work", $("header input").val(), {expires: 7*52*20});
+        window.location.reload(true);
     }
     function makeid(){
         var text = "", possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
